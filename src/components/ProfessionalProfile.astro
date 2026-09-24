@@ -1,0 +1,99 @@
+---
+import '../styles/global.css';
+import '../styles/profile.css';
+import type { Professional } from '../data/professionals';
+import { CLINIC_NAME, whatsappUrl } from '../data/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  professional: Professional;
+}
+
+const { professional } = Astro.props;
+const scheduleUrl = whatsappUrl(
+  `Olá, gostaria de agendar uma consulta com ${professional.shortName}.`,
+  professional.whatsappNumber,
+);
+const title = `${professional.name} | ${CLINIC_NAME}`;
+const description = `Conheça o currículo, a formação e as áreas de atuação de ${professional.name}.`;
+const canonical = Astro.site ? new URL(professional.href, Astro.site) : undefined;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Physician',
+  name: professional.name,
+  image: professional.image,
+  description,
+  url: canonical?.toString(),
+  worksFor: { '@type': 'MedicalClinic', name: CLINIC_NAME },
+};
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content={professional.theme === 'jovita' ? '#875865' : '#172a46'} />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={professional.image} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="128x128" />
+    <title>{title}</title>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class={`profile-page profile-${professional.theme}`}>
+    <a class="skip-link profile-skip-link" href="#curriculo">Ir para o currículo</a>
+    <main>
+      <section class="profile-photo" aria-label={`Foto profissional de ${professional.name}`}>
+        <div class="profile-image-frame">
+          <img
+            src={professional.image}
+            alt={`Foto profissional de ${professional.name}`}
+            width={professional.imageWidth}
+            height={professional.imageHeight}
+            fetchpriority="high"
+          />
+        </div>
+      </section>
+
+      <article class="profile-curriculum" id="curriculo">
+        <header class="profile-heading">
+          <p class="profile-kicker">Currículo profissional</p>
+          <h1>{professional.name}</h1>
+          <p class="profile-summary">{professional.specialties}</p>
+        </header>
+
+        <section class="profile-specialties" aria-labelledby="areas-title">
+          <h2 id="areas-title">Áreas de atuação e formação</h2>
+          <ul>
+            {professional.specialtyList.map((specialty) => <li>{specialty}</li>)}
+          </ul>
+        </section>
+
+        <div class="curriculum-grid">
+          {professional.curriculum.map((section) => (
+            <section class="curriculum-section">
+              <h2>{section.title}</h2>
+              <ul>
+                {section.items.map((item) => <li>{item}</li>)}
+              </ul>
+            </section>
+          ))}
+        </div>
+
+        <div class="profile-schedule">
+          <a class="profile-schedule-button" href={scheduleUrl} target="_blank" rel="noopener noreferrer">
+            <Icon name="whatsapp" size={21} />
+            Agendar consulta
+            <Icon name="arrow" size={18} />
+          </a>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>

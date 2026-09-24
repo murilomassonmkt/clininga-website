@@ -1,0 +1,33 @@
+---
+import Icon from './Icon.astro';
+import { PROFESSIONALS } from '../data/professionals';
+import { ADDRESS, GOOGLE_MAPS_URL, HOURS, PHONE_PRIMARY, PHONE_SECONDARY, phoneHref, whatsappUrl } from '../data/site';
+
+const [fernando, jovita] = PROFESSIONALS;
+---
+
+<section class="section contact" id="contato">
+  <div class="container">
+    <div class="section-heading reveal">
+      <div><p class="eyebrow"><span></span> Contato</p><h2>Estamos prontos para atender você</h2></div>
+      <p>Entre em contato para tirar dúvidas sobre atendimento e disponibilidade de agenda.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-panel reveal">
+        <div class="contact-item"><span class="icon-box"><Icon name="phone" /></span><div><small>Telefones para agendamento</small><a href={phoneHref(PHONE_PRIMARY)}>{PHONE_PRIMARY} — Dr. Fernando</a><a href={phoneHref(PHONE_SECONDARY)}>{PHONE_SECONDARY} — Dra. Jovita</a></div></div>
+        <div class="contact-item"><span class="icon-box"><Icon name="pin" /></span><div><small>Endereço</small><p>{ADDRESS}</p></div></div>
+        <div class="contact-item"><span class="icon-box"><Icon name="clock" /></span><div><small>Atendimento</small><p>{HOURS}</p></div></div>
+        <div class="contact-actions">
+          <a class="button button-dark" href={whatsappUrl('Olá, gostaria de agendar uma consulta com o Dr. Fernando.', fernando.whatsappNumber)} target="_blank" rel="noopener noreferrer"><Icon name="whatsapp" size={19} /> WhatsApp Dr. Fernando</a>
+          <a class="button button-dark" href={whatsappUrl('Olá, gostaria de agendar uma consulta com a Dra. Jovita.', jovita.whatsappNumber)} target="_blank" rel="noopener noreferrer"><Icon name="whatsapp" size={19} /> WhatsApp Dra. Jovita</a>
+          <a class="button button-outline" href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer"><Icon name="pin" size={18} /> Abrir rota</a>
+        </div>
+      </div>
+      <div class="map-placeholder reveal" aria-label="Localização da Cliningá">
+        <div class="map-grid"></div>
+        <span class="map-pin"><Icon name="pin" size={28} /></span>
+        <div><strong>Cliningá</strong><p>Av. Dr. Luiz Teixeira Mendez, 2136</p><small>Zona 5 — Maringá, PR</small></div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,17 @@
+---
+import { CONTACT_URL, IMAGES } from '../data/site';
+import Icon from './Icon.astro';
+---
+
+<section class="hero" id="inicio" aria-label="Cliningá">
+  <img class="hero-image" src={IMAGES.hero} alt="Fachada da clínica Cliníngo em Maringá ao entardecer" width="1672" height="944" fetchpriority="high" />
+  <div class="container hero-content">
+    <p class="eyebrow light hero-hidden-copy"><span></span> Clínica médica em Maringá</p>
+    <h1 class="hero-hidden-copy">Cuidado médico com confiança, estrutura e tradição</h1>
+    <p class="hero-lead hero-hidden-copy">Atendimento especializado em ginecologia, obstetrícia, gastroenterologia, cirurgia e exames médicos em Maringá.</p>
+    <div class="hero-actions">
+      <a class="button button-primary" href={CONTACT_URL}>Agendar consulta <Icon name="arrow" size={18} /></a>
+      <a class="button button-ghost" href="#sobre">Conheça a clínica</a>
+    </div>
+  </div>
+</section>

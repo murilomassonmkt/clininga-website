@@ -1,0 +1,19 @@
+---
+interface Props {
+  class?: string;
+  loading?: 'eager' | 'lazy';
+}
+
+const { class: className, loading = 'eager' } = Astro.props;
+---
+
+<img
+  class:list={['brand-logo', className]}
+  src="/images/logo-clininga-gold.png"
+  alt=""
+  width="2400"
+  height="665"
+  loading={loading}
+  decoding="async"
+  aria-hidden="true"
+/>

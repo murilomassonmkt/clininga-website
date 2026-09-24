@@ -1,0 +1,8 @@
+---
+import ProfessionalProfile from '../../components/ProfessionalProfile.astro';
+import { getProfessional } from '../../data/professionals';
+
+const professional = getProfessional('jovita');
+---
+
+<ProfessionalProfile {professional} />

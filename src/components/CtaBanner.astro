@@ -1,0 +1,11 @@
+---
+import { CONTACT_URL } from '../data/site';
+import Icon from './Icon.astro';
+---
+
+<section class="cta-banner" aria-labelledby="cta-title">
+  <div class="container cta-inner">
+    <div><p>Atendimento próximo e especializado</p><h2 id="cta-title">Precisa agendar uma consulta?</h2></div>
+    <a class="button button-light" href={CONTACT_URL}><Icon name="whatsapp" size={20} /> Escolher WhatsApp</a>
+  </div>
+</section>

@@ -1,0 +1,23 @@
+---
+import Icon from './Icon.astro';
+import { ADDRESS, CONTACT_URL, HOURS } from '../data/site';
+
+const cards = [
+  { icon: 'pin', label: 'Localização', value: ADDRESS, href: '#contato' },
+  { icon: 'phone', label: 'Contato', value: 'Telefones por profissional', href: CONTACT_URL },
+  { icon: 'clock', label: 'Atendimento', value: HOURS, href: '#contato' },
+  { icon: 'whatsapp', label: 'WhatsApp', value: 'Escolha o profissional', href: '#medicos' },
+];
+---
+
+<section class="info-strip" id="informacoes" aria-label="Informações rápidas">
+  <div class="container info-grid">
+    {cards.map((card) => (
+      <a class="info-card" href={card.href}>
+        <span class="icon-box"><Icon name={card.icon} size={25} /></span>
+        <span><small>{card.label}</small><strong>{card.value}</strong></span>
+        <Icon name="arrow" size={18} />
+      </a>
+    ))}
+  </div>
+</section>

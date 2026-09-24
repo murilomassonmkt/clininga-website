@@ -1,0 +1,234 @@
+---
+const galleryCategories = [
+  {
+    slug: 'recepcao',
+    title: 'Recepção da clínica',
+    description: 'Conheça os ambientes de chegada e acolhimento da Cliningá.',
+    imageCount: 7,
+    alt: 'Recepção da clínica Cliningá',
+  },
+  {
+    slug: 'ambientes',
+    title: 'Salas de atendimento e área interna',
+    description: 'Consultórios, salas de exames e detalhes da estrutura interna da clínica.',
+    imageCount: 30,
+    alt: 'Sala de atendimento e área interna da Cliningá',
+  },
+  {
+    slug: 'evora',
+    title: 'Espaço Évora',
+    description: 'Um espaço reservado, acolhedor e preparado para atendimentos com privacidade.',
+    imageCount: 11,
+    alt: 'Ambiente do Espaço Évora',
+  },
+  {
+    slug: 'equipe',
+    title: 'Equipe Cliningá',
+    description: 'Os profissionais que fazem parte do cuidado e da experiência Cliningá.',
+    imageCount: 8,
+    alt: 'Integrante da equipe Cliningá',
+  },
+].map((category) => ({
+  ...category,
+  images: Array.from({ length: category.imageCount }, (_, index) => ({
+    src: `/images/structure/gallery/${category.slug}/${category.slug}-${String(index + 1).padStart(2, '0')}.avif`,
+    alt: `${category.alt} — foto ${index + 1}`,
+  })),
+}));
+---
+
+<section class="section structure" id="estrutura">
+  <div class="container">
+    <div class="structure-heading reveal">
+      <p class="eyebrow light"><span></span> Nossa estrutura</p>
+      <div>
+        <h2>Conheça cada espaço da Cliningá</h2>
+        <p>Selecione uma categoria para explorar os ambientes e conhecer de perto nossa estrutura e equipe.</p>
+      </div>
+    </div>
+
+    <div class="structure-categories">
+      {galleryCategories.map((category, categoryIndex) => (
+        <details class="structure-category reveal" data-gallery-category>
+          <summary>
+            <span class="structure-category-number" aria-hidden="true">
+              {String(categoryIndex + 1).padStart(2, '0')}
+            </span>
+            <span class="structure-category-title">
+              <strong>{category.title}</strong>
+              <small>{category.imageCount} {category.imageCount === 1 ? 'foto' : 'fotos'}</small>
+            </span>
+            <span class="structure-category-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="m7 9 5 5 5-5"></path>
+              </svg>
+            </span>
+          </summary>
+
+          <div class="structure-category-content">
+            <p>{category.description}</p>
+            <div class="structure-photo-grid">
+              {category.images.map((image, imageIndex) => (
+                <button
+                  class="structure-photo"
+                  type="button"
+                  data-gallery-item
+                  data-gallery-group={category.slug}
+                  data-gallery-index={imageIndex}
+                  aria-label={`Ampliar ${image.alt.toLowerCase()}`}
+                  aria-haspopup="dialog"
+                >
+                  <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
+                  <span aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path>
+                    </svg>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+
+  <dialog class="structure-lightbox" data-gallery-lightbox aria-label="Visualização ampliada da galeria">
+    <div class="structure-lightbox-panel">
+      <header class="structure-lightbox-header">
+        <div>
+          <strong data-lightbox-title>Galeria</strong>
+          <span data-lightbox-counter aria-live="polite" aria-atomic="true"></span>
+        </div>
+        <button type="button" data-lightbox-close aria-label="Fechar galeria">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m6 6 12 12M18 6 6 18"></path>
+          </svg>
+        </button>
+      </header>
+
+      <div class="structure-lightbox-stage" data-lightbox-stage>
+        <button class="structure-lightbox-nav previous" type="button" data-lightbox-prev aria-label="Foto anterior">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m14.5 5-7 7 7 7"></path>
+          </svg>
+        </button>
+
+        <figure>
+          <img data-lightbox-image alt="" />
+          <figcaption class="visually-hidden" data-lightbox-caption></figcaption>
+        </figure>
+
+        <button class="structure-lightbox-nav next" type="button" data-lightbox-next aria-label="Próxima foto">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m9.5 5 7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </dialog>
+</section>
+
+<script>
+  const lightbox = document.querySelector<HTMLDialogElement>('[data-gallery-lightbox]');
+  const lightboxImage = lightbox?.querySelector<HTMLImageElement>('[data-lightbox-image]');
+  const lightboxTitle = lightbox?.querySelector<HTMLElement>('[data-lightbox-title]');
+  const lightboxCounter = lightbox?.querySelector<HTMLElement>('[data-lightbox-counter]');
+  const lightboxCaption = lightbox?.querySelector<HTMLElement>('[data-lightbox-caption]');
+  const lightboxStage = lightbox?.querySelector<HTMLElement>('[data-lightbox-stage]');
+  const closeButton = lightbox?.querySelector<HTMLButtonElement>('[data-lightbox-close]');
+  const previousButton = lightbox?.querySelector<HTMLButtonElement>('[data-lightbox-prev]');
+  const nextButton = lightbox?.querySelector<HTMLButtonElement>('[data-lightbox-next]');
+
+  if (
+    lightbox &&
+    lightboxImage &&
+    lightboxTitle &&
+    lightboxCounter &&
+    lightboxCaption &&
+    lightboxStage &&
+    closeButton &&
+    previousButton &&
+    nextButton
+  ) {
+    const galleryItems = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-gallery-item]'));
+    let activeItems: HTMLButtonElement[] = [];
+    let activeIndex = 0;
+    let trigger: HTMLButtonElement | null = null;
+    let pointerStartX: number | null = null;
+
+    const updateLightbox = () => {
+      const item = activeItems[activeIndex];
+      const image = item?.querySelector<HTMLImageElement>('img');
+      const category = item?.closest<HTMLDetailsElement>('[data-gallery-category]');
+      const categoryTitle = category?.querySelector<HTMLElement>('.structure-category-title strong')?.textContent;
+
+      if (!image) return;
+
+      lightboxImage.src = image.currentSrc || image.src;
+      lightboxImage.alt = image.alt;
+      lightboxTitle.textContent = categoryTitle || 'Galeria';
+      lightboxCounter.textContent = `${String(activeIndex + 1).padStart(2, '0')} / ${String(activeItems.length).padStart(2, '0')}`;
+      lightboxCaption.textContent = image.alt;
+    };
+
+    const showRelativePhoto = (offset: number) => {
+      activeIndex = (activeIndex + offset + activeItems.length) % activeItems.length;
+      updateLightbox();
+    };
+
+    galleryItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        const group = item.dataset.galleryGroup;
+        activeItems = galleryItems.filter((candidate) => candidate.dataset.galleryGroup === group);
+        activeIndex = activeItems.indexOf(item);
+        trigger = item;
+        updateLightbox();
+        document.body.classList.add('lightbox-open');
+        lightbox.showModal();
+        closeButton.focus();
+      });
+    });
+
+    previousButton.addEventListener('click', () => showRelativePhoto(-1));
+    nextButton.addEventListener('click', () => showRelativePhoto(1));
+    closeButton.addEventListener('click', () => lightbox.close());
+
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) lightbox.close();
+    });
+
+    lightbox.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        showRelativePhoto(-1);
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        showRelativePhoto(1);
+      }
+    });
+
+    lightboxStage.addEventListener('pointerdown', (event) => {
+      if ((event.target as HTMLElement).closest('button')) return;
+      pointerStartX = event.clientX;
+      lightboxStage.setPointerCapture(event.pointerId);
+    });
+
+    lightboxStage.addEventListener('pointerup', (event) => {
+      if (pointerStartX === null) return;
+      const distance = event.clientX - pointerStartX;
+      pointerStartX = null;
+      if (Math.abs(distance) >= 55) showRelativePhoto(distance > 0 ? -1 : 1);
+    });
+
+    lightboxStage.addEventListener('pointercancel', () => {
+      pointerStartX = null;
+    });
+
+    lightbox.addEventListener('close', () => {
+      document.body.classList.remove('lightbox-open');
+      trigger?.focus();
+    });
+  }
+</script>

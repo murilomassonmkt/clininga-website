@@ -1,0 +1,67 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import InfoCards from '../components/InfoCards.astro';
+import About from '../components/About.astro';
+import Specialties from '../components/Specialties.astro';
+import Doctors from '../components/Doctors.astro';
+import Structure from '../components/Structure.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import { CLINIC_NAME, PHONE_PRIMARY, PHONE_SECONDARY, SEO } from '../data/site';
+
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalClinic',
+  name: CLINIC_NAME,
+  description: SEO.description,
+  telephone: [PHONE_PRIMARY, PHONE_SECONDARY],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Av. Dr. Luiz Teixeira Mendez, 2136 - Zona 5',
+    addressLocality: 'Maringá',
+    addressRegion: 'PR',
+    postalCode: '87015-001',
+    addressCountry: 'BR',
+  },
+  medicalSpecialty: ['Gynecologic', 'Obstetric', 'Gastroenterologic', 'Surgical'],
+};
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111111" />
+    <meta name="description" content={SEO.description} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content={SEO.title} />
+    <meta property="og:description" content={SEO.description} />
+    <meta property="og:image" content={SEO.ogImage} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="128x128" />
+    <title>{SEO.title}</title>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+    <Header />
+    <main id="conteudo">
+      <Hero />
+      <InfoCards />
+      <About />
+      <Specialties />
+      <Doctors />
+      <Structure />
+      <CtaBanner />
+      <Contact />
+    </main>
+    <Footer />
+  </body>
+</html>

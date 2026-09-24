@@ -1,0 +1,26 @@
+---
+import Icon from './Icon.astro';
+import { CONTACT_URL, SPECIALTIES } from '../data/site';
+---
+
+<section class="section specialties" id="especialidades">
+  <div class="container">
+    <div class="section-heading reveal">
+      <div><p class="eyebrow"><span></span> Especialidades</p><h2>Cuidado médico em diferentes áreas</h2></div>
+      <p>Atendimento conduzido com responsabilidade, escuta e orientação individualizada.</p>
+    </div>
+    <div class="specialties-grid">
+      {SPECIALTIES.map((item, index) => (
+        <article class="specialty-card reveal">
+          <span class="card-number">{String(index + 1).padStart(2, '0')}</span>
+          <span class="specialty-icon"><Icon name={item.icon} size={28} /></span>
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+          <a href={CONTACT_URL} aria-label={`Agendar atendimento em ${item.title}`}>
+            Agendar atendimento <Icon name="arrow" size={17} />
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,15 @@
+---
+import { CLINIC_NAME, NAV_ITEMS, PHONE_PRIMARY, PHONE_SECONDARY, SPECIALTIES, phoneHref } from '../data/site';
+import BrandLogo from './BrandLogo.astro';
+---
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-brand"><a class="brand brand-light" href="#inicio" aria-label={`${CLINIC_NAME} — voltar ao início`}><BrandLogo loading="lazy" /></a><p>Cuidado médico especializado e próximo em Maringá.</p></div>
+    <div><h2>Links rápidos</h2><nav aria-label="Links do rodapé">{NAV_ITEMS.slice(1).map((item) => <a href={item.href}>{item.label}</a>)}</nav></div>
+    <div><h2>Especialidades</h2><ul>{SPECIALTIES.slice(0, 5).map((item) => <li><a href="#especialidades">{item.title}</a></li>)}</ul></div>
+    <div><h2>Contato</h2><a href={phoneHref(PHONE_PRIMARY)}>{PHONE_PRIMARY} — Dr. Fernando</a><a href={phoneHref(PHONE_SECONDARY)}>{PHONE_SECONDARY} — Dra. Jovita</a><p>Maringá — PR</p></div>
+  </div>
+  <div class="container footer-note"><p>As informações deste site têm caráter informativo e não substituem avaliação médica individualizada.</p></div>
+  <div class="container footer-bottom"><p>© {new Date().getFullYear()} {CLINIC_NAME}. Todos os direitos reservados.</p><a href="#inicio">Voltar ao topo ↑</a></div>
+</footer>
